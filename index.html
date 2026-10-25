@@ -1,1 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100b19">
+<title>Heart.exe ❤️ — How Well Do You Know Me?</title>
+<style>
+:root {
+  --bg:#100b19;
+  --card:#1c1428;
+  --text:#fff5ff;
+  --muted:#bba9c9;
+  --accent:#ff4fa3;
+  --accent2:#a855f7;
+  --border:#382344;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,sans-serif;
+  background:radial-gradient(ellipse at top,#301334,var(--bg) 65%);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  padding:22px 16px;
+  text-align:center;
+}
+.logo{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+.logo span{color:var(--accent)}
+header p{color:var(--muted);margin:7px 0}
+main{max-width:720px;margin:auto;padding:8px 16px 60px}
+.card{
+  background:rgba(28,20,40,.94);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:18px;
+  box-shadow:0 12px 40px #0002;
+}
+h1{font-size:clamp(25px,6vw,38px);line-height:1.15;margin:8px 0 12px}
+h2{font-size:21px;margin:0 0 14px}
+p{line-height:1.6}
+.muted{color:var(--muted)}
+label{display:block;font-size:13px;color:var(--muted);margin:15px 0 7px}
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  color:var(--text);
+  background:#110d1b;
+  border:1px solid var(--border);
+  border-radius:12px;
+  outline:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:76px}
+button.primary{
+  border:0;
+  border-radius:13px;
+  padding:14px 18px;
+  width:100%;
+  color:white;
+  font-weight:800;
+  background:linear-gradient(110deg,var(--accent),var(--accent2));
+  margin-top:18px;
+}
+button.secondary{
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:11px 14px;
+  background:#251a32;
+  color:white;
+}
+button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pill{
+  display:inline-block;padding:6px 11px;border-radius:20px;
+  background:#37203e;color:#ffb4db;font-size:12px;font-weight:700;
+}
+.question-box{
+  border:1px solid var(--border);
+  border-radius:15px;
+  padding:15px;
+  margin-top:13px;
+  background:#171020;
+}
+.question-box h3{font-size:15px;margin:0 0 10px}
+.option-row{display:flex;gap:9px;align-items:center;margin:9px 0}
+.option-row input[type=radio]{width:auto;accent-color:var(--accent)}
+.option-row label{margin:0;color:var(--text);flex:1}
+.answer-option{
+  display:block;
+  width:100%;
+  text-align:left;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:13px;
+  margin:9px 0;
+  color:var(--text);
+  background:#171020;
+}
+.answer-option.selected{
+  border-color:var(--accent);
+  background:#46203d;
+}
+.hidden{display:none!important}
+.center{text-align:center}
+.heart{font-size:48px}
+.big-score{font-size:55px;font-weight:900;color:var(--accent)}
+.progress{height:6px;background:#382344;border-radius:10px;overflow:hidden;margin:15px 0}
+.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
+footer b{color:var(--accent)}
+@media(max-width:480px){
+ .card{padding:17px;border-radius:18px}
+ .row{grid-template-columns:1fr}
+}
+body.theme-pink{--bg:#200b19;--card:#35152b;--border:#65304d;--accent:#ff69b4;--accent2:#ff8a65}
+body.theme-blue{--bg:#071626;--card:#10253a;--border:#23445e;--accent:#46c8ff;--accent2:#7775ff}
+body.theme-purple{--bg:#130b2c;--card:#211644;--border:#49316d;--accent:#c084fc;--accent2:#818cf8}
+body.theme-light{--bg:#fff2f8;--card:#fff;--border:#f0cde0;--text:#38243a;--muted:#806b82;--accent:#ed3f94;--accent2:#9b5de5}
+body.theme-light input,body.theme-light select,body.theme-light textarea,
+body.theme-light .question-box,body.theme-light .answer-option{background:#fff9fc;color:#38243a}
+body.theme-light .secondary{background:#fbe5f2;color:#38243a}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">Heart<span>.exe</span> ❤️</div>
+  <p>Friendship, memories & a little curiosity.</p>
+</header>
 
+<main>
+<section id="home" class="card">
+  <span class="pill">A HEART.EXE EXPERIENCE</span>
+  <h1>How well do they <span style="color:var(--accent)">know you?</span> 👀</h1>
+  <p class="muted">Create your own quiz, challenge your friends, and discover who really knows you best.</p>
+  <button class="primary" onclick="showCreator()">✨ Create my quiz</button>
+</section>
+
+<section id="creator" class="card hidden">
+  <h2>💗 Create your quiz</h2>
+  <p class="muted">Make it personal. Your friends won't see the correct answers before submitting.</p>
+
+  <label>Your name</label>
+  <input id="creatorName" maxlength="50" placeholder="e.g. Alex">
+
+  <div class="row">
+    <div>
+      <label>Number of questions</label>
+      <select id="questionCount" onchange="renderQuestions()">
+        <option>5</option><option>6</option><option>7</option>
+        <option>8</option><option>9</option><option>10</option>
+        <option>11</option><option>12</option><option>13</option>
+        <option>14</option><option>15</option><option>16</option>
+        <option>17</option><option>18</option><option>19</option><option>20</option>
+      </select>
+    </div>
+    <div>
+      <label>Website theme</label>
+      <select id="theme">
+        <option value="theme-purple">💜 Purple dream</option>
+        <option value="theme-pink">💗 Pink love</option>
+        <option value="theme-blue">💙 Midnight blue</option>
+        <option value="theme-light">🤍 Soft & light</option>
+      </select>
+    </div>
+  </div>
+
+  <label>Questions</label>
+  <p class="muted" style="font-size:12px">Choose a ready-made question or write your own. Add four options and select the correct answer.</p>
+  <div id="questions"></div>
+  <button class="primary" onclick="generateQuiz()">🔗 Generate my shareable quiz</button>
+</section>
+
+<section id="share" class="card hidden center">
+  <div class="heart">💌</div>
+  <h2>Your quiz is ready!</h2>
+  <p class="muted">Share this link with your friends and see who knows you best.</p>
+  <input id="shareLink" readonly>
+  <button class="primary" onclick="copyLink()">📋 Copy quiz link</button>
+  <button class="secondary" style="margin-top:12px;width:100%" onclick="nativeShare()">📲 Share with friends</button>
+  <button class="secondary" style="margin-top:12px;width:100%" onclick="resetApp()">Create another quiz</button>
+  <p class="muted" style="font-size:12px">Keep your link safe! This first version stores quiz details inside the link.</p>
+</section>
+
+<section id="play" class="card hidden">
+  <span class="pill">YOUR FRIEND'S CHALLENGE</span>
+  <h1 id="playTitle">How well do you know me?</h1>
+  <p class="muted" id="playSubtitle"></p>
+  <div class="progress"><div id="progressBar"></div></div>
+  <div id="playQuestion"></div>
+  <button id="nextButton" class="primary" onclick="nextQuestion()" disabled>Next question →</button>
+</section>
+
+<section id="result" class="card hidden center">
+  <div class="heart" id="resultEmoji">🏆</div>
+  <h1>Challenge completed!</h1>
+  <p id="resultIntro" class="muted"></p>
+  <div class="big-score" id="scoreText"></div>
+  <h2 id="resultTitle"></h2>
+  <p id="resultMessage" class="muted"></p>
+  <button class="primary" onclick="nativeShare()">📲 Challenge another friend</button>
+  <button class="secondary" style="margin-top:12px;width:100%" onclick="location.href=location.pathname">Make your own quiz ❤️</button>
+</section>
+
+<section id="error" class="card hidden center">
+  <div class="heart">🥺</div>
+  <h2>We couldn't open this quiz</h2>
+  <p class="muted">The link may be incomplete. Ask your friend to send the full quiz link again.</p>
+  <button class="primary" onclick="location.href=location.pathname">Create my own quiz</button>
+</section>
+</main>
+
+<footer>Made with ❤️ by <b>Heart.exe</b><br>Little websites. Big feelings.</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const readyQuestions = [
+ {q:"What's my favorite food?",o:["Pizza","Burger","Biryani","Ice cream"],a:0},
+ {q:"What's my dream destination?",o:["Japan","Paris","Switzerland","Dubai"],a:1},
+ {q:"What's my favorite kind of day?",o:["Rainy","Sunny","Snowy","Windy"],a:0},
+ {q:"What's my biggest fear?",o:["Losing loved ones","Darkness","Heights","Spiders"],a:0},
+ {q:"What makes me happiest?",o:["Friends","Food","Music","Sleep"],a:0},
+ {q:"What's my favorite color?",o:["Black","Pink","Blue","Purple"],a:0},
+ {q:"What's my dream job?",o:["Creator","Doctor","Traveler","Entrepreneur"],a:0},
+ {q:"What's my favorite time of day?",o:["Morning","Afternoon","Sunset","Midnight"],a:3},
+ {q:"What do I value most?",o:["Honesty","Money","Popularity","Style"],a:0},
+ {q:"What's my ideal weekend?",o:["Going out","Staying home","Traveling","Gaming"],a:1},
+ {q:"What cheers me up fastest?",o:["A good talk","A gift","Music","A joke"],a:0},
+ {q:"Which describes me best?",o:["Quiet","Funny","Adventurous","Sensitive"],a:1},
+ {q:"What's my favorite season?",o:["Spring","Summer","Autumn","Winter"],a:3},
+ {q:"What would I choose?",o:["Beach","Mountains","City","Countryside"],a:1},
+ {q:"What matters most in friendship?",o:["Trust","Humor","Gifts","Popularity"],a:0},
+ {q:"What's my favorite drink?",o:["Coffee","Tea","Juice","Milkshake"],a:1},
+ {q:"What am I most likely to do?",o:["Overthink","Sleep","Travel","Shop"],a:0},
+ {q:"What is my dream superpower?",o:["Teleportation","Flying","Invisibility","Time travel"],a:3},
+ {q:"Which gift would I love?",o:["A personal letter","Money","Clothes","Gadgets"],a:0},
+ {q:"What do I do when I'm sad?",o:["Listen to music","Talk to someone","Sleep","Stay quiet"],a:0}
+];
+let questionData=[], current=0, answers=[], quiz=null;
+
+function showCreator(){
+ hideAll(); $("creator").classList.remove("hidden");
+ renderQuestions();
+}
+function hideAll(){
+ ["home","creator","share","play","result","error"].forEach(id=>$(id).classList.add("hidden"));
+}
+function renderQuestions(){
+ const count=Number($("questionCount").value);
+ const box=$("questions");
+ const old=[];
+ box.querySelectorAll(".question-box").forEach((el,i)=>{
+   old[i]={
+     q:el.querySelector(".custom-q").value,
+     o:[...el.querySelectorAll(".opt")].map(x=>x.value),
+     a:Number(el.querySelector('input[type="radio"]:checked')?.value||0)
+   };
+ });
+ box.innerHTML="";
+ for(let i=0;i<count;i++){
+   const d=old[i]||{q:readyQuestions[i].q,o:[...readyQuestions[i].o],a:readyQuestions[i].a};
+   const div=document.createElement("div");
+   div.className="question-box";
+   div.innerHTML=`<h3>Question ${i+1}</h3>
+     <select class="preset" aria-label="Question preset">
+       <option value="">Choose a ready-made question…</option>
+       ${readyQuestions.map((q,j)=>`<option value="${j}">${escapeHtml(q.q)}</option>`).join("")}
+     </select>
+     <label>Question text</label>
+     <input class="custom-q" maxlength="180" value="${escapeAttr(d.q)}" placeholder="Write your question">
+     <label>Answer options</label>
+     ${d.o.map((o,j)=>`<div class="option-row"><input type="radio" name="correct${i}" value="${j}" ${j===d.a?"checked":""} aria-label="Correct answer ${j+1}"><input class="opt" maxlength="100" value="${escapeAttr(o)}" placeholder="Option ${j+1}"></div>`).join("")}
+     <p class="muted" style="font-size:12px">Select the circle beside the correct answer.</p>`;
+   box.appendChild(div);
+   div.querySelector(".preset").addEventListener("change",e=>{
+     if(e.target.value==="")return;
+     const q=readyQuestions[Number(e.target.value)];
+     div.querySelector(".custom-q").value=q.q;
+     div.querySelectorAll(".opt").forEach((x,j)=>x.value=q.o[j]);
+     div.querySelectorAll('input[type="radio"]').forEach((x,j)=>x.checked=j===q.a);
+   });
+ }
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function escapeAttr(s){return escapeHtml(s);}
+function encodeData(data){
+ const bytes=new TextEncoder().encode(JSON.stringify(data));
+ let binary="";
+ bytes.forEach(b=>binary+=String.fromCharCode(b));
+ return btoa(binary).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+}
+function decodeData(str){
+ const bin=atob(str.replace(/-/g,"+").replace(/_/g,"/"));
+ const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+ return JSON.parse(new TextDecoder().decode(bytes));
+}
+function generateQuiz(){
+ const name=$("creatorName").value.trim();
+ if(!name){alert("Please enter your name first ❤️");$("creatorName").focus();return;}
+ const cards=[...$("questions").querySelectorAll(".question-box")];
+ const qs=[];
+ for(let i=0;i<cards.length;i++){
+   const c=cards[i],q=c.querySelector(".custom-q").value.trim();
+   const opts=[...c.querySelectorAll(".opt")].map(x=>x.value.trim());
+   const correct=c.querySelector('input[type="radio"]:checked');
+   if(!q||opts.some(o=>!o)){alert("Please complete question "+(i+1)+" and all four options.");return;}
+   if(!correct){alert("Select the correct answer for question "+(i+1)+".");return;}
+   qs.push({q,o:opts,a:Number(correct.value)});
+ }
+ const data={v:1,n:name,t:$("theme").value,q:qs};
+ const url=location.href.split("#")[0]+"#quiz="+encodeData(data);
+ $("shareLink").value=url;
+ document.body.className=data.t;
+ hideAll();$("share").classList.remove("hidden");
+}
+async function copyLink(){
+ try{await navigator.clipboard.writeText($("shareLink").value);alert("Quiz link copied! Share it with your friends ❤️");}
+ catch(e){$("shareLink").select();alert("Select and copy your link.");}
+}
+async function nativeShare(){
+ const url=$("shareLink").value||location.href;
+ if(navigator.share){try{await navigator.share({title:"Heart.exe ❤️",text:"How well do you know me? Take my quiz!",url});}catch(e){}}
+ else{try{await navigator.clipboard.writeText(url);alert("Link copied!");}catch(e){prompt("Copy this link:",url);}}
+}
+function startQuiz(data){
+ if(!data||!data.n||!Array.isArray(data.q)||data.q.length<5||data.q.length>20)throw Error("Invalid quiz");
+ data.q.forEach(q=>{if(!q.q||!Array.isArray(q.o)||q.o.length!==4||!Number.isInteger(q.a)||q.a<0||q.a>3)throw Error("Invalid question")});
+ quiz=data;current=0;answers=[];
+ document.body.className=data.t||"theme-purple";
+ hideAll();$("play").classList.remove("hidden");
+ $("playTitle").textContent="How well do you know "+data.n+"? 👀";
+ $("playSubtitle").textContent=data.q.length+" questions. Let's find out!";
+ renderPlayQuestion();
+}
+function renderPlayQuestion(){
+ const q=quiz.q[current];
+ $("progressBar").style.width=(current/quiz.q.length*100)+"%";
+ $("playQuestion").innerHTML=`<h2>${current+1}. ${escapeHtml(q.q)}</h2>`+
+ q.o.map((o,i)=>`<button class="answer-option" data-index="${i}">${escapeHtml(o)}</button>`).join("");
+ $("playQuestion").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{
+   answers[current]=Number(b.dataset.index);
+   $("playQuestion").querySelectorAll("button").forEach(x=>x.classList.toggle("selected",x===b));
+   $("nextButton").disabled=false;
+   $("nextButton").textContent=current===quiz.q.length-1?"Reveal my score ❤️":"Next question →";
+ }));
+ $("nextButton").disabled=true;
+ $("nextButton").textContent=current===quiz.q.length-1?"Reveal my score ❤️":"Next question →";
+}
+function nextQuestion(){
+ if(answers[current]===undefined)return;
+ current++;
+ if(current<quiz.q.length)renderPlayQuestion();
+ else showResult();
+}
+function showResult(){
+ let score=0;
+ quiz.q.forEach((q,i)=>{if(answers[i]===q.a)score++;});
+ const pct=Math.round(score/quiz.q.length*100);
+ $("progressBar").style.width="100%";
+ hideAll();$("result").classList.remove("hidden");
+ $("resultEmoji").textContent=pct===100?"👑":pct>=70?"🥰":pct>=40?"💗":"😭";
+ $("resultIntro").textContent="You completed "+quiz.n+"'s challenge!";
+ $("scoreText").textContent=score+" / "+quiz.q.length;
+ $("resultTitle").textContent=pct===100?"BEST FRIEND MATERIAL!":pct>=70?"You know them pretty well!":pct>=40?"There's more to discover!":"Time for a friendship catch-up!";
+ $("resultMessage").textContent=pct===100?"You know them inside out. Legendary!":pct>=70?"Not bad at all. You two have some great memories.":pct>=40?"A few surprises left to learn about each other.":"Time to talk, make memories, and try again!";
+ $("shareLink").value=location.href;
+}
+function resetApp(){location.href=location.href.split("#")[0];}
+(function init(){
+ const hash=location.hash;
+ if(!hash){document.body.className="theme-purple";return;}
+ try{
+   const match=hash.match(/(?:^#|&)quiz=([^&]+)/);
+   if(!match)throw Error("Missing quiz");
+   startQuiz(decodeData(match[1]));
+ }catch(e){hideAll();$("error").classList.remove("hidden");}
+})();
+</script>
+</body>
+    </html>
