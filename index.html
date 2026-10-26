@@ -4,166 +4,1295 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#100b19">
+<meta name="description" content="Create your own Heart.exe quiz and discover who knows you best.">
 <title>Heart.exe ❤️ — How Well Do You Know Me?</title>
 
 <style>
-:root{
---bg:#100b19;--card:#1c1428;--text:#fff5ff;
---muted:#bba9c9;--accent:#ff4fa3;--accent2:#a855f7;
---border:#382344
+:root {
+  color-scheme: dark;
+  --bg:#0b0713;
+  --card:rgba(27,19,42,.82);
+  --text:#fff6ff;
+  --muted:#b9a9cc;
+  --accent:#ff4fa3;
+  --accent2:#a855f7;
+  --border:rgba(208,153,255,.18);
+  --field:#130d20;
+  --surface:rgba(255,255,255,.045);
+  --good:#5ee6a8;
+  --bad:#ff718d;
+  --shadow:0 22px 65px rgba(0,0,0,.24);
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,sans-serif;
-background:radial-gradient(ellipse at top,#301334,var(--bg) 65%);
-color:var(--text);min-height:100vh}
-button,input,select{font:inherit}
-button{cursor:pointer}
-header{text-align:center;padding:22px 16px}
-.logo{font-size:27px;font-weight:900;letter-spacing:-1px}
-.logo span{color:var(--accent)}
-header p{color:var(--muted);margin:7px 0}
-main{max-width:720px;margin:auto;padding:8px 16px 60px}
-.card{background:rgba(28,20,40,.94);border:1px solid var(--border);
-border-radius:22px;padding:22px;margin-bottom:18px;box-shadow:0 12px 40px #0002}
-h1{font-size:clamp(25px,6vw,38px);line-height:1.15;margin:8px 0 12px}
-h2{font-size:21px;margin:0 0 14px}
-h3{font-size:16px}
-p{line-height:1.6}
-.muted{color:var(--muted)}
-label{display:block;font-size:13px;color:var(--muted);margin:15px 0 7px}
-input,select{width:100%;padding:13px;color:var(--text);background:#110d1b;
-border:1px solid var(--border);border-radius:12px;outline:none}
-input:focus,select:focus{border-color:var(--accent)}
-button.primary{border:0;border-radius:13px;padding:14px 18px;width:100%;
-color:white;font-weight:800;background:linear-gradient(110deg,var(--accent),var(--accent2));margin-top:18px}
-button.secondary{border:1px solid var(--border);border-radius:12px;
-padding:11px 14px;background:#251a32;color:white}
-button.danger{border:1px solid #9f334d;border-radius:12px;
-padding:10px 13px;background:#481a2a;color:white}
-button:disabled{opacity:.5;cursor:not-allowed}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pill{display:inline-block;padding:6px 11px;border-radius:20px;
-background:#37203e;color:#ffb4db;font-size:12px;font-weight:700}
-.question-box,.result-card{border:1px solid var(--border);border-radius:15px;
-padding:15px;margin-top:13px;background:#171020;overflow-wrap:anywhere}
-.question-box h3{margin:0 0 10px}
-.option-row{display:flex;gap:9px;align-items:center;margin:9px 0}
-.option-row input[type=radio]{width:auto;accent-color:var(--accent)}
-.option-row label{margin:0;color:var(--text);flex:1}
-.answer-option{display:block;width:100%;text-align:left;border:1px solid var(--border);
-border-radius:12px;padding:13px;margin:9px 0;color:var(--text);background:#171020}
-.answer-option.selected{border-color:var(--accent);background:#46203d}
-.hidden{display:none!important}
-.center{text-align:center}
-.heart{font-size:48px}
-.big-score{font-size:55px;font-weight:900;color:var(--accent)}
-.progress{height:6px;background:#382344;border-radius:10px;overflow:hidden;margin:15px 0}
-.progress div{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:25px}
-footer b{color:var(--accent)}
-.notice{padding:12px;border-radius:12px;background:#251a32;border:1px solid var(--border);overflow-wrap:anywhere;margin:12px 0}
-.small{font-size:12px}
-body.theme-pink{--bg:#200b19;--card:#35152b;--border:#65304d;--accent:#ff69b4;--accent2:#ff8a65}
-body.theme-blue{--bg:#071626;--card:#10253a;--border:#23445e;--accent:#46c8ff;--accent2:#7775ff}
-body.theme-purple{--bg:#130b2c;--card:#211644;--border:#49316d;--accent:#c084fc;--accent2:#818cf8}
-body.theme-light{--bg:#fff2f8;--border:#f0cde0;--text:#38243a;--muted:#806b82;--accent:#ed3f94;--accent2:#9b5de5;background:radial-gradient(ellipse at top,#f9d8ea,var(--bg) 65%)}
-body.theme-light input,body.theme-light select,body.theme-light .question-box,body.theme-light .answer-option,body.theme-light .result-card{background:#fff9fc;color:#38243a}
-body.theme-light .secondary,body.theme-light .notice{background:#fbe5f2;color:#38243a}
-@media(max-width:480px){.card{padding:17px;border-radius:18px}.row{grid-template-columns:1fr}}
+
+* {
+  box-sizing:border-box;
+}
+
+html {
+  scroll-behavior:smooth;
+}
+
+body {
+  margin:0;
+  min-height:100vh;
+  overflow-x:hidden;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(168,85,247,.20),transparent 38%),
+    radial-gradient(ellipse at 95% 15%,rgba(255,79,163,.13),transparent 32%),
+    var(--bg);
+  color:var(--text);
+  transition:background .3s,color .3s;
+}
+
+body::before,
+body::after {
+  content:"";
+  position:fixed;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:.12;
+  pointer-events:none;
+  z-index:-1;
+  animation:floatGlow 12s ease-in-out infinite alternate;
+}
+
+body::before {
+  background:var(--accent2);
+  top:15%;
+  left:-150px;
+}
+
+body::after {
+  background:var(--accent);
+  right:-150px;
+  bottom:5%;
+  animation-delay:-5s;
+}
+
+@keyframes floatGlow {
+  from {transform:translateY(-20px) scale(.9)}
+  to {transform:translateY(50px) scale(1.15)}
+}
+
+button,
+input,
+select {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
+button:disabled {
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.hidden {
+  display:none!important;
+}
+
+.site-header {
+  max-width:1100px;
+  margin:auto;
+  padding:22px 20px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  min-width:0;
+}
+
+.brand-icon {
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  background:linear-gradient(145deg,var(--accent),var(--accent2));
+  box-shadow:0 8px 30px rgba(255,79,163,.23);
+  font-size:24px;
+  flex-shrink:0;
+}
+
+.brand-name {
+  font-size:22px;
+  font-weight:950;
+  letter-spacing:-1px;
+}
+
+.brand-name span {
+  color:var(--accent);
+}
+
+.brand-subtitle {
+  margin-top:3px;
+  color:var(--muted);
+  font-size:11px;
+}
+
+.header-actions {
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.icon-button {
+  min-height:42px;
+  padding:9px 13px;
+  border-radius:13px;
+  border:1px solid var(--border);
+  color:var(--text);
+  background:var(--surface);
+  transition:transform .2s,border-color .2s;
+}
+
+.icon-button:hover {
+  transform:translateY(-2px);
+  border-color:var(--accent);
+}
+
+main {
+  max-width:1100px;
+  margin:auto;
+  padding:18px 20px 70px;
+}
+
+.card {
+  position:relative;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:26px;
+  padding:26px;
+  margin-bottom:20px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  animation:cardEnter .4s ease both;
+}
+
+@keyframes cardEnter {
+  from {opacity:0;transform:translateY(9px)}
+  to {opacity:1;transform:translateY(0)}
+}
+
+h1 {
+  font-size:clamp(30px,5.5vw,51px);
+  letter-spacing:-1.8px;
+  line-height:1.08;
+  margin:18px 0;
+}
+
+h2 {
+  font-size:clamp(21px,4vw,28px);
+  letter-spacing:-.6px;
+  margin:0 0 16px;
+}
+
+h3 {
+  font-size:17px;
+  margin:0 0 10px;
+}
+
+h4 {
+  margin:0 0 12px;
+  font-size:15px;
+}
+
+p {
+  line-height:1.7;
+}
+
+.muted {
+  color:var(--muted);
+}
+
+.small {
+  font-size:12px;
+}
+
+.center {
+  text-align:center;
+}
+
+.gradient-text {
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.eyebrow {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:30px;
+  background:var(--surface);
+  color:var(--accent);
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:1.1px;
+}
+
+.dot {
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--good);
+  box-shadow:0 0 12px var(--good);
+}
+
+.primary,
+.secondary,
+.danger {
+  min-height:48px;
+  border-radius:14px;
+  padding:13px 17px;
+  font-weight:800;
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+}
+
+.primary {
+  width:100%;
+  border:0;
+  color:#fff;
+  background:linear-gradient(110deg,var(--accent),var(--accent2));
+  box-shadow:0 9px 28px rgba(168,85,247,.22);
+}
+
+.primary:hover:not(:disabled) {
+  transform:translateY(-2px);
+  box-shadow:0 13px 35px rgba(168,85,247,.34);
+}
+
+.secondary {
+  border:1px solid var(--border);
+  color:var(--text);
+  background:var(--surface);
+}
+
+.secondary:hover:not(:disabled) {
+  transform:translateY(-1px);
+  border-color:var(--accent);
+}
+
+.danger {
+  border:1px solid rgba(255,113,141,.35);
+  color:#fff;
+  background:rgba(180,35,70,.23);
+}
+
+.button-row {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+
+.button-row > button {
+  flex:1 1 150px;
+}
+
+.full {
+  width:100%;
+}
+
+label {
+  display:block;
+  margin:17px 0 8px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:700;
+}
+
+input,
+select {
+  width:100%;
+  min-height:47px;
+  padding:12px 14px;
+  color:var(--text);
+  background:var(--field);
+  border:1px solid var(--border);
+  border-radius:13px;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+
+input:focus,
+select:focus {
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(255,79,163,.09);
+}
+
+input::placeholder {
+  color:var(--muted);
+  opacity:.7;
+}
+
+select option {
+  background:var(--field);
+  color:var(--text);
+}
+
+.row {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.hero {
+  overflow:hidden;
+  padding:clamp(25px,5vw,52px);
+  min-height:350px;
+  display:flex;
+  align-items:center;
+}
+
+.hero-content {
+  position:relative;
+  z-index:1;
+  max-width:660px;
+}
+
+.hero h1 {
+  max-width:650px;
+}
+
+.hero-description {
+  max-width:510px;
+  color:var(--muted);
+  font-size:16px;
+}
+
+.hero-art {
+  position:absolute;
+  right:5%;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:clamp(100px,20vw,190px);
+  opacity:.14;
+  filter:drop-shadow(0 0 35px var(--accent));
+  animation:heartFloat 4s ease-in-out infinite;
+  pointer-events:none;
+}
+
+@keyframes heartFloat {
+  0%,100% {transform:translateY(-50%) rotate(-5deg) scale(1)}
+  50% {transform:translateY(calc(-50% - 12px)) rotate(5deg) scale(1.04)}
+}
+
+.hero-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+  max-width:480px;
+}
+
+.hero-actions button {
+  flex:1 1 190px;
+}
+
+.feature-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+  margin:20px 0;
+}
+
+.feature-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:19px;
+  transition:transform .2s,border-color .2s;
+}
+
+.feature-card:hover {
+  transform:translateY(-3px);
+  border-color:var(--accent);
+}
+
+.feature-icon {
+  font-size:27px;
+  margin-bottom:12px;
+}
+
+.feature-card h3 {
+  margin-bottom:6px;
+}
+
+.feature-card p {
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.section-heading {
+  margin:28px 0 15px;
+}
+
+.pill {
+  display:inline-flex;
+  padding:6px 11px;
+  border-radius:20px;
+  background:rgba(168,85,247,.13);
+  color:var(--accent);
+  border:1px solid var(--border);
+  font-size:11px;
+  font-weight:850;
+}
+
+.question-box,
+.result-card,
+.manage-section,
+.question-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:17px;
+  margin-top:14px;
+  overflow-wrap:anywhere;
+}
+
+.question-box h3 {
+  margin:0 0 8px;
+}
+
+.option-row {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:10px 0;
+}
+
+.option-row input[type="radio"] {
+  flex-shrink:0;
+  width:19px;
+  height:19px;
+  min-height:auto;
+  accent-color:var(--accent);
+}
+
+.option-row input[type="text"],
+.option-row input:not([type]) {
+  flex:1;
+  min-width:0;
+}
+
+.question-note {
+  margin-bottom:0;
+}
+
+.answer-option {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:15px;
+  margin:10px 0;
+  border:1px solid var(--border);
+  border-radius:15px;
+  text-align:left;
+  color:var(--text);
+  background:var(--surface);
+  transition:transform .15s,border-color .15s,background .15s;
+}
+
+.answer-option:hover {
+  transform:translateX(2px);
+  border-color:var(--accent);
+}
+
+.answer-option.selected {
+  border-color:var(--accent);
+  background:rgba(168,85,247,.16);
+  box-shadow:inset 0 0 0 1px rgba(168,85,247,.12);
+}
+
+.answer-letter {
+  display:grid;
+  place-items:center;
+  width:30px;
+  height:30px;
+  flex-shrink:0;
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--accent);
+  font-size:12px;
+  font-weight:900;
+}
+
+.progress {
+  height:8px;
+  overflow:hidden;
+  background:var(--surface);
+  border-radius:20px;
+  margin:20px 0;
+}
+
+.progress div {
+  width:0;
+  height:100%;
+  border-radius:20px;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .25s;
+}
+
+.progress-label {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.big-score {
+  font-size:clamp(54px,13vw,85px);
+  line-height:1.1;
+  font-weight:950;
+  letter-spacing:-3px;
+  background:linear-gradient(110deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  margin:20px 0;
+}
+
+.score-ring {
+  width:155px;
+  height:155px;
+  margin:20px auto;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  border:5px solid var(--border);
+  background:var(--surface);
+  box-shadow:0 0 45px rgba(168,85,247,.10);
+}
+
+.heart {
+  font-size:58px;
+  animation:heartFloat 3s ease-in-out infinite;
+}
+
+.notice {
+  padding:13px 15px;
+  margin:13px 0;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:var(--surface);
+  overflow-wrap:anywhere;
+}
+
+.manage-section {
+  margin-top:20px;
+  padding:20px;
+}
+
+.manage-section > h3 {
+  font-size:18px;
+}
+
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:11px;
+  margin:15px 0;
+}
+
+.stat-card {
+  min-width:0;
+  padding:17px 12px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:17px;
+}
+
+.stat-icon {
+  font-size:20px;
+}
+
+.stat-number {
+  font-size:clamp(22px,4vw,31px);
+  font-weight:950;
+  letter-spacing:-1px;
+  margin:7px 0 2px;
+  overflow-wrap:anywhere;
+}
+
+.stat-label {
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.submission-card {
+  margin-top:13px;
+  padding:17px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+
+.submission-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+}
+
+.submission-name {
+  font-weight:850;
+  overflow-wrap:anywhere;
+}
+
+.score-badge {
+  padding:7px 10px;
+  flex-shrink:0;
+  border-radius:12px;
+  background:rgba(168,85,247,.16);
+  color:var(--accent);
+  font-weight:900;
+  font-size:12px;
+}
+
+.score-track {
+  height:6px;
+  background:var(--surface);
+  border-radius:10px;
+  overflow:hidden;
+  margin:12px 0;
+}
+
+.score-track div {
+  height:100%;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  border-radius:10px;
+}
+
+details {
+  margin-top:13px;
+  border-top:1px solid var(--border);
+  padding-top:12px;
+}
+
+summary {
+  color:var(--accent);
+  cursor:pointer;
+  font-size:13px;
+  font-weight:800;
+}
+
+.answer-detail {
+  white-space:pre-line;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.8;
+}
+
+.correct-answer {
+  color:var(--good);
+}
+
+.empty-state {
+  text-align:center;
+  padding:30px 16px;
+  border:1px dashed var(--border);
+  border-radius:18px;
+  background:var(--surface);
+}
+
+.empty-state .empty-icon {
+  font-size:36px;
+}
+
+.empty-state p {
+  color:var(--muted);
+  font-size:13px;
+}
+
+.danger-zone {
+  border-color:rgba(255,113,141,.25);
+}
+
+.danger-zone h3 {
+  color:var(--bad);
+}
+
+.toast {
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  padding:12px 17px;
+  background:#241833;
+  border:1px solid var(--border);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  color:var(--text);
+  font-size:13px;
+  font-weight:750;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s,transform .2s;
+  z-index:100;
+  max-width:calc(100% - 30px);
+  text-align:center;
+}
+
+.toast.visible {
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+.site-footer {
+  max-width:1100px;
+  margin:auto;
+  padding:10px 20px 30px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.site-footer strong {
+  color:var(--accent);
+}
+
+.site-footer p {
+  margin:6px 0;
+}
+
+body.theme-pink {
+  --bg:#200b19;
+  --card:rgba(53,21,43,.86);
+  --border:rgba(255,150,205,.20);
+  --accent:#ff69b4;
+  --accent2:#ff8a65;
+  --field:#251020;
+}
+
+body.theme-blue {
+  --bg:#071626;
+  --card:rgba(16,37,58,.88);
+  --border:rgba(100,190,255,.20);
+  --accent:#46c8ff;
+  --accent2:#7775ff;
+  --field:#091a2b;
+}
+
+body.theme-purple {
+  --bg:#130b2c;
+  --card:rgba(33,22,68,.84);
+  --border:rgba(192,132,252,.20);
+  --accent:#c084fc;
+  --accent2:#818cf8;
+  --field:#160f2b;
+}
+
+body.theme-light {
+  color-scheme:light;
+  --bg:#fff2f8;
+  --card:rgba(255,255,255,.84);
+  --text:#38243a;
+  --muted:#806b82;
+  --border:rgba(188,105,154,.22);
+  --accent:#ed3f94;
+  --accent2:#9b5de5;
+  --field:#fff9fc;
+  --surface:rgba(155,93,229,.055);
+  --shadow:0 20px 55px rgba(106,52,91,.09);
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(237,63,148,.12),transparent 38%),
+    radial-gradient(ellipse at 95% 15%,rgba(155,93,229,.12),transparent 32%),
+    var(--bg);
+}
+
+body.theme-light .icon-button,
+body.theme-light .secondary {
+  color:var(--text);
+}
+
+body.theme-light .primary,
+body.theme-light .danger {
+  color:#fff;
+}
+
+body.theme-light .score-badge {
+  background:rgba(155,93,229,.12);
+}
+
+@media(min-width:760px) {
+  .hero {
+    min-height:390px;
+  }
+
+  .creator-layout {
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr);
+    gap:24px;
+    align-items:start;
+  }
+
+  .creator-sidebar {
+    position:sticky;
+    top:18px;
+  }
+}
+
+@media(max-width:600px) {
+  .site-header {
+    padding:16px 14px 8px;
+  }
+
+  .brand-icon {
+    width:41px;
+    height:41px;
+    border-radius:13px;
+  }
+
+  .brand-name {
+    font-size:19px;
+  }
+
+  .brand-subtitle {
+    font-size:10px;
+  }
+
+  .icon-button {
+    padding:8px 10px;
+    min-height:40px;
+  }
+
+  main {
+    padding:13px 13px 50px;
+  }
+
+  .card {
+    padding:19px;
+    border-radius:21px;
+  }
+
+  .hero {
+    min-height:360px;
+    align-items:flex-start;
+  }
+
+  .hero-art {
+    top:auto;
+    right:12px;
+    bottom:5px;
+    transform:none;
+    font-size:120px;
+    opacity:.11;
+  }
+
+  .hero h1 {
+    font-size:36px;
+    letter-spacing:-1.4px;
+  }
+
+  .hero-description {
+    font-size:14px;
+  }
+
+  .feature-grid {
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  .feature-card {
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:15px;
+  }
+
+  .feature-icon {
+    margin:0;
+    font-size:26px;
+  }
+
+  .feature-card h3 {
+    margin:0 0 4px;
+  }
+
+  .row {
+    grid-template-columns:1fr;
+    gap:0;
+  }
+
+  .stats-grid {
+    gap:8px;
+  }
+
+  .stat-card {
+    padding:13px 9px;
+  }
+
+  .stat-number {
+    font-size:24px;
+  }
+
+  .stat-label {
+    font-size:10px;
+  }
+
+  .submission-card {
+    padding:14px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
+}
 </style>
 </head>
+
 <body class="theme-purple">
-<header>
-<div class="logo">Heart<span>.exe</span> ❤️</div>
-<p>Friendship, memories & a little curiosity.</p>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-icon">❤️</div>
+    <div>
+      <div class="brand-name">Heart<span>.exe</span></div>
+      <div class="brand-subtitle">Friendship, memories & curiosity</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="icon-button" type="button" onclick="cycleTheme()" aria-label="Change theme">
+      🎨 <span id="themeLabel">Purple</span>
+    </button>
+  </div>
 </header>
+
 <main>
-<section id="home" class="card">
-<span class="pill">A HEART.EXE EXPERIENCE</span>
-<h1>How well do they <span style="color:var(--accent)">know you?</span> 👀</h1>
-<p class="muted">Create your own quiz, challenge your friends, and discover who really knows you best.</p>
-<button class="primary" onclick="showCreator()">✨ Create my quiz</button>
+
+<!-- HOME DASHBOARD -->
+<section id="home" class="card hero">
+  <div class="hero-content">
+    <span class="eyebrow"><span class="dot"></span> YOUR FRIENDSHIP ERA STARTS HERE</span>
+
+    <h1>
+      Who really<br>
+      <span class="gradient-text">knows you best?</span> 👀
+    </h1>
+
+    <p class="hero-description">
+      Create your own quiz, send it to your friends, and discover who remembers
+      the little things about you. Some answers might surprise you. ❤️
+    </p>
+
+    <div class="hero-actions">
+      <button class="primary" onclick="showCreator()">✨ Create my quiz</button>
+      <button class="secondary" onclick="showHowItWorks()">💡 How it works</button>
+    </div>
+  </div>
+
+  <div class="hero-art" aria-hidden="true">💗</div>
 </section>
 
+<section id="features" class="feature-grid">
+  <article class="feature-card">
+    <div class="feature-icon">💌</div>
+    <div>
+      <h3>Your own quiz</h3>
+      <p>Choose your questions and set the correct answers.</p>
+    </div>
+  </article>
+
+  <article class="feature-card">
+    <div class="feature-icon">👯</div>
+    <div>
+      <h3>Challenge friends</h3>
+      <p>Share one link. Friends can play without an account.</p>
+    </div>
+  </article>
+
+  <article class="feature-card">
+    <div class="feature-icon">🏆</div>
+    <div>
+      <h3>See the results</h3>
+      <p>Discover who knows you best in your private dashboard.</p>
+    </div>
+  </article>
+</section>
+
+<!-- CREATE QUIZ -->
 <section id="creator" class="card hidden">
-<h2>💗 Create your quiz</h2>
-<label>Your name</label><input id="creatorName" maxlength="50" placeholder="e.g. Alex">
-<label>Quiz title (optional)</label><input id="quizTitle" maxlength="100" placeholder="How well do you know me?">
-<div class="row">
-<div><label>Number of questions</label><select id="questionCount" onchange="renderQuestions()">
-<option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option><option>13</option><option>14</option><option>15</option><option>16</option><option>17</option><option>18</option><option>19</option><option>20</option>
-</select></div>
-<div><label>Website theme</label><select id="theme">
-<option value="theme-purple">💜 Purple dream</option>
-<option value="theme-pink">💗 Pink love</option>
-<option value="theme-blue">💙 Midnight blue</option>
-<option value="theme-light">🤍 Soft & light</option>
-</select></div></div>
-<label>Questions</label>
-<p class="muted small">Choose ready-made questions or write your own. Select the correct answer.</p>
-<div id="questions"></div>
-<button class="primary" id="generateButton" onclick="generateQuiz()">🔗 Save & generate my quiz link</button>
-<button class="secondary" style="width:100%;margin-top:12px" onclick="goHome()">← Home</button>
-<p id="creatorMessage" class="muted"></p>
+  <span class="eyebrow">✨ BUILD YOUR CHALLENGE</span>
+  <h1>Create your <span class="gradient-text">quiz.</span></h1>
+  <p class="muted">Make it personal. Your friends' answers will reveal how well they know you.</p>
+
+  <div class="creator-layout">
+    <aside class="creator-sidebar">
+      <div class="notice">
+        <strong>💡 Quick tips</strong>
+        <p class="small muted">Choose questions about your favorites, memories, personality, and dreams.</p>
+      </div>
+
+      <div class="notice">
+        <strong>🔐 Private results</strong>
+        <p class="small muted">Your private dashboard link is the key to managing your quiz.</p>
+      </div>
+
+      <button class="secondary full" onclick="goHome()">← Back home</button>
+    </aside>
+
+    <div>
+      <label for="creatorName">Your name</label>
+      <input id="creatorName" maxlength="50" placeholder="e.g. Alex" autocomplete="name">
+
+      <label for="quizTitle">Quiz title</label>
+      <input id="quizTitle" maxlength="100" placeholder="How well do you know me?">
+
+      <div class="row">
+        <div>
+          <label for="questionCount">Number of questions</label>
+          <select id="questionCount" onchange="renderQuestions()">
+            <option>5</option><option>6</option><option>7</option>
+            <option>8</option><option>9</option><option>10</option>
+            <option>11</option><option>12</option><option>13</option>
+            <option>14</option><option>15</option><option>16</option>
+            <option>17</option><option>18</option><option>19</option><option>20</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="theme">Website theme</label>
+          <select id="theme" onchange="applyTheme(this.value)">
+            <option value="theme-purple">💜 Purple dream</option>
+            <option value="theme-pink">💗 Pink love</option>
+            <option value="theme-blue">💙 Midnight blue</option>
+            <option value="theme-light">🤍 Soft & light</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <h2>📝 Your questions</h2>
+        <p class="muted small">Choose a ready-made question or write your own. Select the correct answer for every question.</p>
+      </div>
+
+      <div id="questions"></div>
+
+      <button class="primary" id="generateButton" onclick="generateQuiz()">
+        🔗 Save & generate my quiz link
+      </button>
+
+      <p id="creatorMessage" class="muted small" role="status" aria-live="polite"></p>
+    </div>
+  </div>
 </section>
 
+<!-- SHARE QUIZ -->
 <section id="share" class="card hidden center">
-<div class="heart">💌</div><h2>Your quiz is ready!</h2>
-<p class="muted">Keep your secret management link private. Anyone with it can manage this quiz.</p>
-<label>Public quiz link — share this with friends</label>
-<input id="shareLink" readonly>
-<button class="primary" onclick="copyText('shareLink')">📋 Copy public link</button>
-<label>Private management link — keep secret 🔐</label>
-<input id="manageLink" readonly>
-<button class="secondary" style="width:100%;margin-top:10px" onclick="copyText('manageLink')">🔐 Copy private link</button>
-<button class="secondary" style="width:100%;margin-top:10px" onclick="openManage()">📊 Open dashboard</button>
-<button class="secondary" style="width:100%;margin-top:10px" onclick="goHome()">Create another quiz</button>
+  <div class="heart">💌</div>
+  <span class="eyebrow">YOUR QUIZ IS LIVE</span>
+  <h1>Your quiz is <span class="gradient-text">ready!</span></h1>
+  <p class="muted">Send your public link to friends. Keep your private dashboard link secret.</p>
+
+  <div class="manage-section" style="text-align:left">
+    <h3>🌍 Public quiz link</h3>
+    <p class="muted small">Anyone with this link can take your quiz.</p>
+    <input id="shareLink" readonly aria-label="Public quiz link">
+    <button class="primary" onclick="copyText('shareLink')">📋 Copy public link</button>
+  </div>
+
+  <div class="manage-section" style="text-align:left">
+    <h3>🔐 Private management link</h3>
+    <p class="muted small">This link lets you view results and delete your quiz. Never post it publicly.</p>
+    <input id="manageLink" readonly aria-label="Private management link">
+    <button class="secondary full" style="margin-top:10px" onclick="copyText('manageLink')">🔐 Copy private link</button>
+  </div>
+
+  <div class="button-row">
+    <button class="primary" onclick="openManage()">📊 Open dashboard</button>
+    <button class="secondary" onclick="sharePublicLink()">📲 Share quiz</button>
+  </div>
+
+  <button class="secondary full" style="margin-top:12px" onclick="createAnotherQuiz()">➕ Create another quiz</button>
 </section>
 
+<!-- PLAY QUIZ -->
 <section id="play" class="card hidden">
-<span class="pill">YOUR FRIEND'S CHALLENGE</span>
-<h1 id="playTitle">How well do you know me?</h1>
-<p id="playSubtitle" class="muted"></p>
-<label>Your name</label><input id="respondentName" maxlength="50" placeholder="Enter your name">
-<div class="progress"><div id="progressBar"></div></div>
-<div id="playQuestion"></div>
-<button id="nextButton" class="primary" onclick="nextQuestion()" disabled>Next question →</button>
-<p id="playMessage" class="muted small"></p>
+  <span class="eyebrow"><span class="dot"></span> FRIENDSHIP CHALLENGE</span>
+
+  <h1 id="playTitle">How well do you know me?</h1>
+  <p id="playSubtitle" class="muted"></p>
+
+  <label for="respondentName">What's your name?</label>
+  <input id="respondentName" maxlength="50" placeholder="Enter your name" autocomplete="name">
+
+  <div class="progress-label">
+    <span id="progressText">Question 1</span>
+    <span id="progressPercent">0%</span>
+  </div>
+  <div class="progress"><div id="progressBar"></div></div>
+
+  <div id="playQuestion"></div>
+
+  <button id="nextButton" class="primary" onclick="nextQuestion()" disabled>Next question →</button>
+  <p id="playMessage" class="muted small" role="status" aria-live="polite"></p>
 </section>
 
+<!-- RESULT -->
 <section id="result" class="card hidden center">
-<div class="heart" id="resultEmoji">🏆</div><h1>Challenge completed!</h1>
-<p id="resultIntro" class="muted"></p><div class="big-score" id="scoreText"></div>
-<h2 id="resultTitle"></h2><p id="resultMessage" class="muted"></p>
-<button class="primary" onclick="shareCurrentQuiz()">📲 Challenge another friend</button>
-<button class="secondary" style="width:100%;margin-top:12px" onclick="location.href=location.pathname">Make your own quiz ❤️</button>
+  <div class="heart" id="resultEmoji">🏆</div>
+  <span class="eyebrow">CHALLENGE COMPLETED</span>
+  <h1 id="resultHeading">You did it!</h1>
+  <p id="resultIntro" class="muted"></p>
+
+  <div class="score-ring">
+    <div>
+      <div class="big-score" id="scoreText">0 / 5</div>
+    </div>
+  </div>
+
+  <h2 id="resultTitle"></h2>
+  <p id="resultMessage" class="muted"></p>
+
+  <div class="button-row">
+    <button class="primary" onclick="shareCurrentQuiz()">📲 Challenge another friend</button>
+    <button class="secondary" onclick="goHome()">🏠 Home</button>
+  </div>
 </section>
 
+<!-- PRIVATE DASHBOARD -->
 <section id="manage" class="card hidden">
-<span class="pill">PRIVATE MANAGEMENT AREA 🔐</span>
-<h1 id="manageTitle">Your quiz dashboard</h1>
-<p class="muted">Keep this link private. Anyone who has it can manage this quiz.</p>
-<div id="manageContent">Loading…</div>
-<button class="secondary" style="width:100%;margin-top:15px" onclick="goHome()">Home</button>
+  <span class="eyebrow">🔐 PRIVATE CREATOR DASHBOARD</span>
+
+  <h1 id="manageTitle">Your <span class="gradient-text">dashboard.</span></h1>
+  <p class="muted">Your private space for quiz activity, participants, and results.</p>
+
+  <div class="notice">
+    🔒 <strong>Keep this link private.</strong>
+    Anyone who has your private management link can manage this quiz.
+  </div>
+
+  <div id="manageContent">
+    <div class="empty-state">
+      <div class="empty-icon">✨</div>
+      <p>Loading your dashboard…</p>
+    </div>
+  </div>
 </section>
 
+<!-- ERROR -->
 <section id="error" class="card hidden center">
-<div class="heart">🥺</div><h2>We couldn't open this page</h2>
-<p id="errorMessage" class="muted">The link may be incomplete.</p>
-<button class="primary" onclick="goHome()">Create my own quiz</button>
+  <div class="heart">🥺</div>
+  <h1>Oops, <span class="gradient-text">something happened.</span></h1>
+  <p id="errorMessage" class="muted">The link may be incomplete.</p>
+  <button class="primary" onclick="goHome()">🏠 Return home</button>
 </section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="card hidden">
+  <span class="eyebrow">💡 THREE SIMPLE STEPS</span>
+  <h1>How it <span class="gradient-text">works.</span></h1>
+
+  <div class="feature-grid">
+    <article class="feature-card">
+      <div class="feature-icon">✍️</div>
+      <div>
+        <h3>01. Create</h3>
+        <p>Enter your name, add 5–20 questions, and select correct answers.</p>
+      </div>
+    </article>
+
+    <article class="feature-card">
+      <div class="feature-icon">📲</div>
+      <div>
+        <h3>02. Share</h3>
+        <p>Send the public quiz link to your friends.</p>
+      </div>
+    </article>
+
+    <article class="feature-card">
+      <div class="feature-icon">🏆</div>
+      <div>
+        <h3>03. Discover</h3>
+        <p>Open your private dashboard to see scores and submitted answers.</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="notice">
+    <strong>❤️ No account needed</strong>
+    <p class="muted small">Friends can open your quiz, enter their name, and submit their answers without signing up.</p>
+  </div>
+
+  <button class="primary" onclick="showCreator()">✨ Create my quiz</button>
+  <button class="secondary full" style="margin-top:10px" onclick="goHome()">← Home</button>
+</section>
+
 </main>
-<footer>Made with ❤️ by <b>Heart.exe</b><br>Little websites. Big feelings.</footer>
+
+<footer class="site-footer">
+  <p>Made with ❤️ by <strong>Heart.exe</strong></p>
+  <p>Little websites. Big feelings.</p>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+"use strict";
+
+/* ========================================
+   HEART.EXE — CONFIGURATION
+======================================== */
+
 const SUPABASE_URL = "https://rmhpdhautoxmrumaswwj.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_vpQsWPfmSkd9vHkFsKYEcw_I9OApGYH";
 
 const $ = id => document.getElementById(id);
+
+if (!window.supabase) {
+  document.body.innerHTML =
+    '<main style="padding:25px;font-family:system-ui"><h1>Heart.exe ❤️</h1><p>Could not load the database library. Please refresh the page and try again.</p></main>';
+  throw new Error("Supabase JavaScript library failed to load.");
+}
+
 const db = window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      persistSession:false,
+      autoRefreshToken:false,
+      detectSessionInUrl:false
+    }
+  }
 );
 
 let questionData = [];
@@ -172,6 +1301,20 @@ let current = 0;
 let answers = [];
 let isSubmitting = false;
 let managementToken = null;
+let managedQuizData = null;
+let currentManagementToken = null;
+let toastTimer = null;
+
+const themes = [
+  {value:"theme-purple",label:"Purple"},
+  {value:"theme-pink",label:"Pink"},
+  {value:"theme-blue",label:"Blue"},
+  {value:"theme-light",label:"Light"}
+];
+
+/* ========================================
+   READY-MADE QUESTIONS
+======================================== */
 
 const readyQuestions = [
  {q:"What's my favorite food?",o:["Pizza","Burger","Biryani","Ice cream"],a:0},
@@ -196,449 +1339,665 @@ const readyQuestions = [
  {q:"What do I do when I'm sad?",o:["Listen to music","Talk to someone","Sleep","Stay quiet"],a:0}
 ];
 
-function hideAll(){
- ["home","creator","share","play","result","manage","error"]
- .forEach(id=>$(id).classList.add("hidden"));
-}
+/* ========================================
+   NAVIGATION
+======================================== */
 
-function showOnly(id){
- hideAll();
- $(id).classList.remove("hidden");
- window.scrollTo(0,0);
-}
+const sectionIds = [
+  "home","features","creator","share","play","result","manage","error","how"
+];
 
-function goHome(){
- history.replaceState(null,"",location.pathname+location.search);
- showOnly("home");
-}
-
-function showCreator(){
- showOnly("creator");
- $("creatorMessage").textContent="";
- renderQuestions();
-}
-
-function buildPublicLink(token){
- return location.href.split("#")[0]+"#quiz="+encodeURIComponent(token);
-}
-
-function buildManagementLink(token){
- return location.href.split("#")[0]+"#manage="+encodeURIComponent(token);
-}
-
-async function copyText(id){
- const el=$(id);
- try{
-  await navigator.clipboard.writeText(el.value);
-  alert("Copied! ❤️");
- }catch(e){
-  el.select();
-  alert("Select and copy the link.");
- }
-}
-
-function renderQuestions(){
- const count=Number($("questionCount").value);
- const box=$("questions");
- const old=[];
-
- box.querySelectorAll(".question-box").forEach(el=>{
-  old.push({
-   q:el.querySelector(".custom-q").value,
-   o:[...el.querySelectorAll(".opt")].map(x=>x.value),
-   a:Number(el.querySelector('input[type="radio"]:checked')?.value||0)
+function hideAll() {
+  sectionIds.forEach(id => {
+    const el = $(id);
+    if (el) el.classList.add("hidden");
   });
- });
+}
 
- box.innerHTML="";
+function showOnly(id) {
+  hideAll();
 
- for(let i=0;i<count;i++){
-  const d=old[i]||{
-   q:readyQuestions[i].q,
-   o:[...readyQuestions[i].o],
-   a:readyQuestions[i].a
+  const section = $(id);
+  if (section) section.classList.remove("hidden");
+
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function goHome() {
+  history.replaceState(null,"",location.pathname + location.search);
+  showOnly("home");
+}
+
+function showCreator() {
+  showOnly("creator");
+  $("creatorMessage").textContent = "";
+
+  if (!$("questions").children.length) {
+    renderQuestions();
+  }
+}
+
+function showHowItWorks() {
+  showOnly("how");
+}
+
+function createAnotherQuiz() {
+  history.replaceState(null,"",location.pathname + location.search);
+
+  $("creatorName").value = "";
+  $("quizTitle").value = "";
+  $("creatorMessage").textContent = "";
+
+  showOnly("creator");
+  renderQuestions();
+}
+
+function buildPublicLink(token) {
+  return location.href.split("#")[0] + "#quiz=" + encodeURIComponent(token);
+}
+
+function buildManagementLink(token) {
+  return location.href.split("#")[0] + "#manage=" + encodeURIComponent(token);
+}
+
+/* ========================================
+   THEMES
+======================================== */
+
+function applyTheme(theme) {
+  if (!themes.some(t => t.value === theme)) {
+    theme = "theme-purple";
+  }
+
+  document.body.className = theme;
+  $("theme").value = theme;
+
+  const chosen = themes.find(t => t.value === theme);
+  $("themeLabel").textContent = chosen ? chosen.label : "Purple";
+
+  try {
+    localStorage.setItem("heart-exe-theme",theme);
+  } catch (_) {}
+}
+
+function cycleTheme() {
+  const currentTheme = document.body.className;
+  const index = themes.findIndex(t => t.value === currentTheme);
+  const next = themes[(index + 1) % themes.length];
+
+  applyTheme(next.value);
+  showToast("Theme changed to " + next.label + " ✨");
+}
+
+function initializeTheme() {
+  let saved = "theme-purple";
+
+  try {
+    saved = localStorage.getItem("heart-exe-theme") || saved;
+  } catch (_) {}
+
+  applyTheme(saved);
+}
+
+/* ========================================
+   TOASTS & CLIPBOARD
+======================================== */
+
+function showToast(message) {
+  const toast = $("toast");
+  toast.textContent = message;
+  toast.classList.add("visible");
+
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("visible");
+  },2400);
+}
+
+async function copyText(id) {
+  const el = $(id);
+  if (!el || !el.value) return;
+
+  try {
+    await navigator.clipboard.writeText(el.value);
+    showToast("Copied successfully! ❤️");
+  } catch (_) {
+    el.focus();
+    el.select();
+
+    try {
+      const success = document.execCommand("copy");
+      showToast(success ? "Copied successfully! ❤️" : "Select and copy the link.");
+    } catch (_) {
+      showToast("Select and copy the link manually.");
+    }
+  }
+}
+
+async function sharePublicLink() {
+  const url = $("shareLink").value;
+  if (!url) return;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title:"Heart.exe ❤️ — How well do you know me?",
+        text:"Take my quiz and find out how well you know me!",
+        url
+      });
+    } catch (_) {}
+  } else {
+    await copyText("shareLink");
+  }
+}
+
+/* ========================================
+   QUESTION BUILDER
+======================================== */
+
+function renderQuestions() {
+  const count = Number($("questionCount").value);
+  const box = $("questions");
+  const old = [];
+
+  box.querySelectorAll(".question-box").forEach(el => {
+    old.push({
+      q:el.querySelector(".custom-q").value,
+      o:[...el.querySelectorAll(".opt")].map(x => x.value),
+      a:Number(el.querySelector('input[type="radio"]:checked')?.value ?? 0)
+    });
+  });
+
+  box.replaceChildren();
+
+  for (let i=0; i<count; i++) {
+    const d = old[i] || {
+      q:readyQuestions[i % readyQuestions.length].q,
+      o:[...readyQuestions[i % readyQuestions.length].o],
+      a:readyQuestions[i % readyQuestions.length].a
+    };
+
+    const div = document.createElement("div");
+    div.className = "question-box";
+
+    const h = document.createElement("h3");
+    h.textContent = "✦ Question " + (i+1);
+    div.appendChild(h);
+
+    const presetLabel = document.createElement("label");
+    presetLabel.textContent = "Ready-made questions";
+    div.appendChild(presetLabel);
+
+    const preset = document.createElement("select");
+    const placeholder = document.createElement("option");
+    placeholder.value = "";
+    placeholder.textContent = "Choose a question…";
+    preset.appendChild(placeholder);
+
+    readyQuestions.forEach((q,j) => {
+      const option = document.createElement("option");
+      option.value = j;
+      option.textContent = q.q;
+      preset.appendChild(option);
+    });
+
+    div.appendChild(preset);
+
+    const qLabel = document.createElement("label");
+    qLabel.textContent = "Question text";
+    div.appendChild(qLabel);
+
+    const qInput = document.createElement("input");
+    qInput.className = "custom-q";
+    qInput.maxLength = 180;
+    qInput.value = d.q;
+    qInput.placeholder = "Write your question";
+    div.appendChild(qInput);
+
+    const optionsLabel = document.createElement("label");
+    optionsLabel.textContent = "Four answer options";
+    div.appendChild(optionsLabel);
+
+    for (let j=0; j<4; j++) {
+      const row = document.createElement("div");
+      row.className = "option-row";
+
+      const radio = document.createElement("input");
+      radio.type = "radio";
+      radio.name = "correct" + i;
+      radio.value = j;
+      radio.checked = j === d.a;
+      radio.setAttribute("aria-label","Mark option " + (j+1) + " as correct");
+
+      const input = document.createElement("input");
+      input.className = "opt";
+      input.maxLength = 100;
+      input.value = d.o[j] || "";
+      input.placeholder = "Option " + (j+1);
+
+      row.append(radio,input);
+      div.appendChild(row);
+    }
+
+    const note = document.createElement("p");
+    note.className = "muted small question-note";
+    note.textContent = "○ Select the circle beside the correct answer.";
+    div.appendChild(note);
+
+    preset.addEventListener("change",() => {
+      if (preset.value === "") return;
+
+      const selected = readyQuestions[Number(preset.value)];
+      qInput.value = selected.q;
+
+      div.querySelectorAll(".opt").forEach((el,j) => {
+        el.value = selected.o[j];
+      });
+
+      div.querySelectorAll('input[type="radio"]').forEach((el,j) => {
+        el.checked = j === selected.a;
+      });
+    });
+
+    box.appendChild(div);
+  }
+}
+
+/* ========================================
+   CREATE QUIZ — EXISTING RPC
+======================================== */
+
+async function generateQuiz() {
+  const name = $("creatorName").value.trim();
+  const title = $("quizTitle").value.trim();
+  const theme = $("theme").value;
+  const button = $("generateButton");
+
+  if (!name) {
+    showToast("Please enter your name first ❤️");
+    $("creatorName").focus();
+    return;
+  }
+
+  const cards = [...$("questions").querySelectorAll(".question-box")];
+  const questions = [];
+
+  for (let i=0; i<cards.length; i++) {
+    const card = cards[i];
+    const question = card.querySelector(".custom-q").value.trim();
+    const options = [...card.querySelectorAll(".opt")].map(x => x.value.trim());
+    const correct = card.querySelector('input[type="radio"]:checked');
+
+    if (!question || options.some(x => !x)) {
+      showToast("Complete question " + (i+1) + " and all four options.");
+      card.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+
+    if (new Set(options).size !== 4) {
+      showToast("Use four different options for question " + (i+1) + ".");
+      card.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+
+    if (!correct) {
+      showToast("Choose the correct answer for question " + (i+1) + ".");
+      card.scrollIntoView({behavior:"smooth",block:"center"});
+      return;
+    }
+
+    questions.push({
+      question_text:question,
+      options,
+      correct_option:options[Number(correct.value)],
+      position:i+1
+    });
+  }
+
+  button.disabled = true;
+  button.textContent = "✨ Creating your quiz…";
+  $("creatorMessage").textContent = "Saving your quiz securely…";
+
+  try {
+    const {data,error} = await db.rpc("create_public_quiz",{
+      p_creator_name:name,
+      p_title:title,
+      p_questions:questions
+    });
+
+    if (error) throw error;
+
+    let created = data;
+
+    if (Array.isArray(created)) created = created[0];
+    if (typeof created === "string") created = JSON.parse(created);
+
+    if (!created?.public_token || !created?.management_token) {
+      throw new Error("The server did not return both quiz links.");
+    }
+
+    applyTheme(theme);
+
+    managementToken = created.management_token;
+    currentManagementToken = created.management_token;
+
+    $("shareLink").value = buildPublicLink(created.public_token);
+    $("manageLink").value = buildManagementLink(created.management_token);
+
+    showOnly("share");
+    showToast("Your quiz is ready! ❤️");
+
+  } catch (e) {
+    console.error("Create quiz error:",e);
+    $("creatorMessage").textContent =
+      "Could not create quiz: " + (e.message || "Unknown error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "🔗 Save & generate my quiz link";
+  }
+}
+
+/* ========================================
+   LOAD PUBLIC QUIZ — EXISTING RPC
+======================================== */
+
+async function loadPublicQuiz(token) {
+  const {data,error} = await db.rpc("get_public_quiz",{
+    p_token:token
+  });
+
+  if (error) throw error;
+  if (!data) throw new Error("Quiz not found.");
+
+  let payload = data;
+
+  if (Array.isArray(payload)) payload = payload[0];
+  if (typeof payload === "string") payload = JSON.parse(payload);
+
+  if (!payload || !Array.isArray(payload.questions)) {
+    throw new Error("Unexpected quiz data.");
+  }
+
+  if (payload.questions.length < 5 || payload.questions.length > 20) {
+    throw new Error("This quiz has an invalid question count.");
+  }
+
+  quiz = {
+    id:payload.quiz_id,
+    token,
+    name:payload.creator_name,
+    title:payload.title,
+    questions:payload.questions.sort((a,b) => a.position-b.position)
   };
 
-  const div=document.createElement("div");
-  div.className="question-box";
-
-  const h=document.createElement("h3");
-  h.textContent="Question "+(i+1);
-  div.appendChild(h);
-
-  const preset=document.createElement("select");
-  preset.innerHTML='<option value="">Choose a ready-made question…</option>';
-
-  readyQuestions.forEach((q,j)=>{
-   const op=document.createElement("option");
-   op.value=j;
-   op.textContent=q.q;
-   preset.appendChild(op);
+  quiz.questions.forEach(q => {
+    if (!q.id || !q.question_text || !Array.isArray(q.options) || q.options.length !== 4) {
+      throw new Error("A question is incomplete.");
+    }
   });
-  div.appendChild(preset);
-
-  const label=document.createElement("label");
-  label.textContent="Question text";
-  div.appendChild(label);
-
-  const qInput=document.createElement("input");
-  qInput.className="custom-q";
-  qInput.maxLength=180;
-  qInput.value=d.q;
-  qInput.placeholder="Write your question";
-  div.appendChild(qInput);
-
-  const label2=document.createElement("label");
-  label2.textContent="Answer options";
-  div.appendChild(label2);
-
-  for(let j=0;j<4;j++){
-   const row=document.createElement("div");
-   row.className="option-row";
-
-   const radio=document.createElement("input");
-   radio.type="radio";
-   radio.name="correct"+i;
-   radio.value=j;
-   radio.checked=j===d.a;
-
-   const input=document.createElement("input");
-   input.className="opt";
-   input.maxLength=100;
-   input.value=d.o[j]||"";
-   input.placeholder="Option "+(j+1);
-
-   row.append(radio,input);
-   div.appendChild(row);
-  }
-
-  const note=document.createElement("p");
-  note.className="muted small";
-  note.textContent="Select the circle beside the correct answer.";
-  div.appendChild(note);
-
-  preset.addEventListener("change",()=>{
-   if(preset.value==="")return;
-   const selected=readyQuestions[Number(preset.value)];
-   qInput.value=selected.q;
-
-   div.querySelectorAll(".opt").forEach((el,j)=>{
-    el.value=selected.o[j];
-   });
-
-   div.querySelectorAll('input[type="radio"]').forEach((el,j)=>{
-    el.checked=j===selected.a;
-   });
-  });
-
-  box.appendChild(div);
- }
 }
 
-async function generateQuiz(){
- const name=$("creatorName").value.trim();
- const title=$("quizTitle").value.trim();
- const theme=$("theme").value;
- const button=$("generateButton");
-
- if(!name){
-  alert("Please enter your name first ❤️");
-  $("creatorName").focus();
-  return;
- }
-
- const cards=[...$("questions").querySelectorAll(".question-box")];
- const questions=[];
-
- for(let i=0;i<cards.length;i++){
-  const card=cards[i];
-  const question=card.querySelector(".custom-q").value.trim();
-  const options=[...card.querySelectorAll(".opt")].map(x=>x.value.trim());
-  const correct=card.querySelector('input[type="radio"]:checked');
-
-  if(!question||options.some(x=>!x)){
-   alert("Complete question "+(i+1)+" and all four options.");
-   return;
-  }
-
-  if(new Set(options).size!==4){
-   alert("Use four different options for question "+(i+1)+".");
-   return;
-  }
-
-  if(!correct){
-   alert("Choose the correct answer for question "+(i+1)+".");
-   return;
-  }
-
-  questions.push({
-   question_text:question,
-   options,
-   correct_option:options[Number(correct.value)],
-   position:i+1
-  });
- }
-
- button.disabled=true;
- $("creatorMessage").textContent="Creating your quiz…";
-
- try{
-  const {data,error}=await db.rpc("create_public_quiz",{
-   p_creator_name:name,
-   p_title:title,
-   p_questions:questions
-  });
-
-  if(error)throw error;
-
-  let created=data;
-  if(Array.isArray(created))created=created[0];
-  if(typeof created==="string")created=JSON.parse(created);
-
-  if(!created?.public_token||!created?.management_token){
-   throw new Error("The server did not return both links. Check the database function.");
-  }
-
-  document.body.className=theme;
-  $("shareLink").value=buildPublicLink(created.public_token);
-  $("manageLink").value=buildManagementLink(created.management_token);
-
-  managementToken=created.management_token;
-  showOnly("share");
-
- }catch(e){
-  $("creatorMessage").textContent="Could not create quiz: "+e.message;
- }finally{
-  button.disabled=false;
- }
-}
-
-async function loadPublicQuiz(token){
- const {data,error}=await db.rpc("get_public_quiz",{p_token:token});
- if(error)throw error;
- if(!data)throw new Error("Quiz not found.");
-
- let payload=data;
- if(Array.isArray(payload))payload=payload[0];
- if(typeof payload==="string")payload=JSON.parse(payload);
-
- if(!payload||!Array.isArray(payload.questions)){
-  throw new Error("Unexpected quiz data.");
- }
-
- if(payload.questions.length<5||payload.questions.length>20){
-  throw new Error("This quiz has an invalid question count.");
- }
-
- quiz={
-  id:payload.quiz_id,
-  token,
-  name:payload.creator_name,
-  title:payload.title,
-  questions:payload.questions.sort((a,b)=>a.position-b.position)
- };
-
- quiz.questions.forEach(q=>{
-  if(!q.id||!q.question_text||!Array.isArray(q.options)||q.options.length!==4){
-   throw new Error("A question is incomplete.");
-  }
- });
-}
-
-async function startPublicQuiz(token){
- showOnly("error");
- $("errorMessage").textContent="Loading quiz…";
-
- try{
-  await loadPublicQuiz(token);
-  current=0;
-  answers=[];
-  isSubmitting=false;
-
-  $("respondentName").value="";
-  $("playTitle").textContent=quiz.title;
-  $("playSubtitle").textContent=quiz.questions.length+" questions. Let's find out!";
-  $("playMessage").textContent="";
-
-  showOnly("play");
-  renderPlayQuestion();
- }catch(e){
+async function startPublicQuiz(token) {
   showOnly("error");
-  $("errorMessage").textContent="We couldn't load this quiz: "+e.message;
- }
+  $("errorMessage").textContent = "Loading quiz…";
+
+  try {
+    await loadPublicQuiz(token);
+
+    current = 0;
+    answers = [];
+    isSubmitting = false;
+
+    $("respondentName").value = "";
+    $("playTitle").textContent = quiz.title || ("How well do you know " + quiz.name + "?");
+    $("playSubtitle").textContent =
+      "Created by " + quiz.name + " · " + quiz.questions.length + " questions";
+    $("playMessage").textContent = "";
+
+    showOnly("play");
+    renderPlayQuestion();
+
+  } catch (e) {
+    console.error("Load public quiz error:",e);
+    showOnly("error");
+    $("errorMessage").textContent = "We couldn't load this quiz: " + e.message;
+  }
 }
 
-function renderPlayQuestion(){
- const q=quiz.questions[current];
- $("progressBar").style.width=(current/quiz.questions.length*100)+"%";
+/* ========================================
+   QUIZ PLAYER
+======================================== */
 
- const container=$("playQuestion");
- container.innerHTML="";
+function renderPlayQuestion() {
+  const q = quiz.questions[current];
+  const container = $("playQuestion");
 
- const h=document.createElement("h2");
- h.textContent=(current+1)+". "+q.question_text;
- container.appendChild(h);
+  $("progressBar").style.width =
+    ((current+1)/quiz.questions.length*100) + "%";
 
- q.options.forEach((option,index)=>{
-  const button=document.createElement("button");
-  button.className="answer-option";
-  button.textContent=option;
+  $("progressText").textContent =
+    "Question " + (current+1) + " of " + quiz.questions.length;
 
-  button.onclick=()=>{
-   answers[current]=index;
-   container.querySelectorAll(".answer-option").forEach((el,j)=>{
-    el.classList.toggle("selected",j===index);
-   });
-   $("nextButton").disabled=false;
-  };
+  $("progressPercent").textContent =
+    Math.round((current+1)/quiz.questions.length*100) + "%";
 
-  container.appendChild(button);
- });
+  container.replaceChildren();
 
- $("nextButton").disabled=answers[current]===undefined;
- $("nextButton").textContent=
-  current===quiz.questions.length-1
-   ?"Submit my answers ❤️":"Next question →";
+  const h = document.createElement("h2");
+  h.textContent = (current+1) + ". " + q.question_text;
+  container.appendChild(h);
 
- if(answers[current]!==undefined){
-  container.querySelectorAll(".answer-option")[answers[current]]
-   .classList.add("selected");
- }
-}
+  const letters = ["A","B","C","D"];
 
-async function nextQuestion(){
- if(answers[current]===undefined||isSubmitting)return;
+  q.options.forEach((option,index) => {
+    const button = document.createElement("button");
+    button.className = "answer-option";
+    button.type = "button";
 
- if(current<quiz.questions.length-1){
-  current++;
-  renderPlayQuestion();
-  return;
- }
+    const letter = document.createElement("span");
+    letter.className = "answer-letter";
+    letter.textContent = letters[index];
 
- await submitQuiz();
-}
+    const text = document.createElement("span");
+    text.textContent = option;
 
-async function submitQuiz(){
- const name=$("respondentName").value.trim();
+    button.append(letter,text);
 
- if(!name){
-  $("playMessage").textContent="Enter your name before submitting.";
-  $("respondentName").focus();
-  return;
- }
+    button.setAttribute("aria-pressed",String(answers[current] === index));
 
- if(answers.length!==quiz.questions.length||answers.some(a=>a===undefined)){
-  $("playMessage").textContent="Please answer every question.";
-  return;
- }
+    button.onclick = () => {
+      answers[current] = index;
 
- isSubmitting=true;
- $("nextButton").disabled=true;
- $("nextButton").textContent="Saving your result…";
- $("playMessage").textContent="Submitting securely…";
+      container.querySelectorAll(".answer-option").forEach((el,j) => {
+        const selected = j === index;
+        el.classList.toggle("selected",selected);
+        el.setAttribute("aria-pressed",String(selected));
+      });
 
- try{
-  const answerPayload=quiz.questions.map((q,i)=>({
-   question_id:q.id,
-   answer:q.options[answers[i]]
-  }));
+      $("nextButton").disabled = false;
+      $("playMessage").textContent = "";
+    };
 
-  const {data,error}=await db.rpc("submit_quiz",{
-   p_token:quiz.token,
-   p_respondent_name:name,
-   p_answers:answerPayload
+    container.appendChild(button);
   });
 
-  if(error)throw error;
+  $("nextButton").disabled = answers[current] === undefined;
 
-  let result=data;
-  if(Array.isArray(result))result=result[0];
-  if(typeof result==="string")result=JSON.parse(result);
+  $("nextButton").textContent =
+    current === quiz.questions.length-1
+      ? "Submit my answers ❤️"
+      : "Next question →";
 
-  const score=Number(result?.score);
-  const total=Number(result?.total_questions);
+  if (answers[current] !== undefined) {
+    container.querySelectorAll(".answer-option")[answers[current]]
+      .classList.add("selected");
+  }
+}
 
-  if(!Number.isFinite(score)||!Number.isFinite(total)){
-   throw new Error("The server returned an invalid score.");
+async function nextQuestion() {
+  if (answers[current] === undefined || isSubmitting) return;
+
+  if (current < quiz.questions.length-1) {
+    current++;
+    renderPlayQuestion();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
   }
 
-  showResult(score,total,name);
- }catch(e){
-  $("playMessage").textContent="Could not save: "+e.message+". Please try again.";
-  $("nextButton").disabled=false;
-  $("nextButton").textContent="Try submitting again ❤️";
-  isSubmitting=false;
- }
+  await submitQuiz();
 }
 
-function showResult(score,total,name){
- const pct=total?Math.round(score/total*100):0;
+async function submitQuiz() {
+  const name = $("respondentName").value.trim();
 
- showOnly("result");
- $("resultEmoji").textContent=pct===100?"👑":pct>=70?"🥰":pct>=40?"💗":"😭";
- $("resultIntro").textContent="You completed "+quiz.name+"'s challenge, "+name+"!";
- $("scoreText").textContent=score+" / "+total;
+  if (!name) {
+    $("playMessage").textContent = "Enter your name before submitting.";
+    $("respondentName").focus();
+    return;
+  }
 
- $("resultTitle").textContent=
-  pct===100?"BEST FRIEND MATERIAL!":
-  pct>=70?"You know them pretty well!":
-  pct>=40?"There's more to discover!":"Time for a friendship catch-up!";
+  if (answers.length !== quiz.questions.length || answers.some(a => a === undefined)) {
+    $("playMessage").textContent = "Please answer every question.";
+    return;
+  }
 
- $("resultMessage").textContent=
-  pct===100?"You know them inside out. Legendary!":
-  pct>=70?"Not bad at all. You two have some great memories.":
-  pct>=40?"A few surprises left to learn about each other.":
-  "Time to talk, make memories, and try again!";
+  isSubmitting = true;
+  $("nextButton").disabled = true;
+  $("nextButton").textContent = "Saving your result…";
+  $("playMessage").textContent = "Submitting your answers securely…";
 
- window.scrollTo(0,0);
+  try {
+    const answerPayload = quiz.questions.map((q,i) => ({
+      question_id:q.id,
+      answer:q.options[answers[i]]
+    }));
+
+    const {data,error} = await db.rpc("submit_quiz",{
+      p_token:quiz.token,
+      p_respondent_name:name,
+      p_answers:answerPayload
+    });
+
+    if (error) throw error;
+
+    let result = data;
+
+    if (Array.isArray(result)) result = result[0];
+    if (typeof result === "string") result = JSON.parse(result);
+
+    const score = Number(result?.score);
+    const total = Number(result?.total_questions);
+
+    if (!Number.isFinite(score) || !Number.isFinite(total)) {
+      throw new Error("The server returned an invalid score.");
+    }
+
+    showResult(score,total,name);
+
+  } catch (e) {
+    console.error("Submit quiz error:",e);
+
+    $("playMessage").textContent =
+      "Could not save: " + e.message + ". Please try again.";
+
+    $("nextButton").disabled = false;
+    $("nextButton").textContent = "Try submitting again ❤️";
+    isSubmitting = false;
+  }
 }
 
-function shareCurrentQuiz(){
- if(!quiz)return;
- const url=buildPublicLink(quiz.token);
+/* ========================================
+   RESULT SCREEN
+======================================== */
 
- if(navigator.share){
-  navigator.share({
-   title:"Heart.exe ❤️",
-   text:"How well do you know me? Take my quiz!",
-   url
-  }).catch(()=>{});
- }else{
-  prompt("Copy your quiz link:",url);
- }
+function showResult(score,total,name) {
+  const pct = total ? Math.round(score/total*100) : 0;
+
+  showOnly("result");
+
+  $("resultEmoji").textContent =
+    pct === 100 ? "👑" :
+    pct >= 70 ? "🥰" :
+    pct >= 40 ? "💗" : "😭";
+
+  $("resultHeading").textContent =
+    pct === 100 ? "Absolutely legendary!" :
+    pct >= 70 ? "Pretty impressive!" :
+    pct >= 40 ? "There's more to discover!" :
+    "Friendship side quest unlocked!";
+
+  $("resultIntro").textContent =
+    "You completed " + quiz.name + "'s challenge, " + name + "!";
+
+  $("scoreText").textContent = score + " / " + total;
+
+  $("resultTitle").textContent =
+    pct === 100 ? "BEST FRIEND MATERIAL!" :
+    pct >= 70 ? "You know them pretty well!" :
+    pct >= 40 ? "A few mysteries remain!" :
+    "Time for a friendship catch-up!";
+
+  $("resultMessage").textContent =
+    pct === 100 ? "You know them inside out. Legendary!" :
+    pct >= 70 ? "Not bad at all. You two share some great memories." :
+    pct >= 40 ? "There are still a few surprises to learn about each other." :
+    "Time to talk, make memories, and try again!";
+
+  isSubmitting = false;
 }
-</script>
-<script>
-/* =========================================
-   HEART.EXE — PRIVATE QUIZ MANAGEMENT
-========================================= */
 
-let managedQuizData = null;
-let currentManagementToken = null;
+function shareCurrentQuiz() {
+  if (!quiz) return;
 
-/* Safely display user-provided text */
-function safeText(value) {
-  return String(value ?? "");
+  const url = buildPublicLink(quiz.token);
+
+  if (navigator.share) {
+    navigator.share({
+      title:"Heart.exe ❤️",
+      text:"How well do you know me? Take my quiz!",
+      url
+    }).catch(() => {});
+  } else {
+    prompt("Copy your quiz link:",url);
+  }
 }
 
-/* Handle Supabase JSON responses */
+/* ========================================
+   PRIVATE MANAGEMENT DASHBOARD
+======================================== */
+
 function normalizeResponse(data) {
   if (Array.isArray(data) && data.length === 1) {
     return data[0];
   }
+
   return data;
 }
 
-/* Open the private management dashboard */
+function safeText(value) {
+  return String(value ?? "");
+}
+
 function openManage() {
-  let token = currentManagementToken;
+  let token = currentManagementToken || managementToken;
 
   if (!token && managedQuizData) {
     token = managedQuizData.management_token;
   }
 
   if (!token) {
-    alert("Create a quiz first, then use its private management link.");
+    const link = $("manageLink").value;
+
+    if (link) {
+      try {
+        token = new URL(link).hash.slice(8);
+      } catch (_) {}
+    }
+  }
+
+  if (!token) {
+    showToast("Create a quiz first, then open its dashboard.");
     return;
   }
 
@@ -646,128 +2005,187 @@ function openManage() {
   routeHash();
 }
 
-/* Load a quiz owner's private dashboard */
 async function loadManagedQuiz(token) {
   currentManagementToken = token;
-
   showOnly("manage");
 
-  const titleElement = document.getElementById("manageTitle");
-  const contentElement = document.getElementById("manageContent");
+  $("manageTitle").textContent = "Loading your dashboard…";
 
-  if (titleElement) {
-    titleElement.textContent = "Loading your dashboard...";
-  }
+  const content = $("manageContent");
+  content.replaceChildren();
 
-  if (contentElement) {
-    contentElement.replaceChildren();
-  }
+  const loading = document.createElement("div");
+  loading.className = "empty-state";
+  loading.innerHTML = '<div class="empty-icon">✨</div><p>Loading quiz statistics and results…</p>';
+  content.appendChild(loading);
 
   try {
-    const { data, error } = await db.rpc("get_managed_quiz", {
-      p_management_token: token
+    const {data,error} = await db.rpc("get_managed_quiz",{
+      p_management_token:token
     });
 
     if (error) throw error;
 
-    const quiz = normalizeResponse(data);
+    const quizData = normalizeResponse(data);
 
-    if (!quiz || !quiz.id) {
+    if (!quizData || !quizData.id) {
       throw new Error("Quiz not found. Check your private management link.");
     }
 
-    managedQuizData = quiz;
+    managedQuizData = quizData;
 
-    if (titleElement) {
-      titleElement.textContent = quiz.title || "Your Quiz";
-    }
+    $("manageTitle").textContent = quizData.title || "Your dashboard";
+    content.replaceChildren();
 
-    if (!contentElement) return;
-
-    contentElement.replaceChildren();
-
-    const makeElement = (tag, text, className) => {
+    const makeElement = (tag,text,className) => {
       const el = document.createElement(tag);
-      if (text !== undefined) el.textContent = safeText(text);
+
+      if (text !== undefined) {
+        el.textContent = safeText(text);
+      }
+
       if (className) el.className = className;
+
       return el;
     };
 
-    const addSection = (heading) => {
-      const section = makeElement("section", undefined, "manage-section");
-      section.appendChild(makeElement("h3", heading));
-      contentElement.appendChild(section);
+    const addSection = (heading,className="manage-section") => {
+      const section = makeElement("section",undefined,className);
+      section.appendChild(makeElement("h3",heading));
+      content.appendChild(section);
       return section;
     };
 
-    /* Quiz overview */
-    const overview = addSection("📊 Quiz Overview");
+    const questions = Array.isArray(quizData.questions)
+      ? quizData.questions
+      : [];
+
+    const submissions = Array.isArray(quizData.submissions)
+      ? quizData.submissions
+      : [];
+
+    const average = submissions.length
+      ? Math.round(
+          submissions.reduce((sum,s) => {
+            const total = Number(s.total_questions) || 0;
+            const score = Number(s.score) || 0;
+            return sum + (total ? score/total*100 : 0);
+          },0) / submissions.length
+        )
+      : 0;
+
+    /* Overview stats */
+    const overview = addSection("📊 Quiz overview");
+
+    const stats = makeElement("div",undefined,"stats-grid");
+
+    const statItems = [
+      {icon:"📝",number:questions.length,label:"Questions"},
+      {icon:"👥",number:submissions.length,label:"Submissions"},
+      {icon:"🎯",number:submissions.length ? average+"%" : "—",label:"Average score"}
+    ];
+
+    statItems.forEach(item => {
+      const card = makeElement("div",undefined,"stat-card");
+
+      card.appendChild(makeElement("div",item.icon,"stat-icon"));
+      card.appendChild(makeElement("div",item.number,"stat-number"));
+      card.appendChild(makeElement("div",item.label,"stat-label"));
+
+      stats.appendChild(card);
+    });
+
+    overview.appendChild(stats);
 
     overview.appendChild(
-      makeElement("p", "Creator: " + (quiz.creator_name || "Anonymous"))
+      makeElement("p","Creator: " + (quizData.creator_name || "Anonymous"),"muted small")
     );
 
-    overview.appendChild(
-      makeElement("p", "Questions: " + (quiz.questions || []).length)
-    );
-
-    overview.appendChild(
-      makeElement("p", "Total submissions: " + (quiz.submissions || []).length)
-    );
-
-    if (quiz.created_at) {
+    if (quizData.created_at) {
       overview.appendChild(
         makeElement(
           "p",
-          "Created: " + new Date(quiz.created_at).toLocaleString()
+          "Created: " + new Date(quizData.created_at).toLocaleString(),
+          "muted small"
         )
       );
     }
 
-    /* Public quiz link */
-    const publicSection = addSection("🔗 Your Public Quiz Link");
+    /* Public link */
+    const publicSection = addSection("🔗 Your public quiz link");
+
+    publicSection.appendChild(
+      makeElement("p","Share this link with friends. They can play without signing in.","muted small")
+    );
 
     const publicInput = makeElement("input");
     publicInput.type = "text";
     publicInput.readOnly = true;
-    publicInput.value = buildPublicLink(quiz.public_token);
-    publicInput.style.width = "100%";
+    publicInput.value = buildPublicLink(quizData.public_token);
+    publicInput.setAttribute("aria-label","Public quiz link");
 
     publicSection.appendChild(publicInput);
 
-    const copyPublicButton = makeElement("button", "📋 Copy Quiz Link");
-    copyPublicButton.type = "button";
-    copyPublicButton.addEventListener("click", async () => {
+    const publicButton = makeElement("button","📋 Copy quiz link","primary full");
+    publicButton.style.marginTop = "10px";
+    publicButton.onclick = async () => {
       try {
         await navigator.clipboard.writeText(publicInput.value);
-        alert("Quiz link copied!");
-      } catch {
+        showToast("Quiz link copied! ❤️");
+      } catch (_) {
         publicInput.focus();
         publicInput.select();
-        alert("Select and copy the link manually.");
+        showToast("Select and copy the link manually.");
       }
-    });
+    };
 
-    publicSection.appendChild(copyPublicButton);
+    publicSection.appendChild(publicButton);
 
-    /* Question and correct-answer overview */
-    const questionsSection = addSection("📝 Questions & Correct Answers");
-    const questions = Array.isArray(quiz.questions) ? quiz.questions : [];
+    const shareButton = makeElement("button","📲 Share quiz","secondary full");
+    shareButton.style.marginTop = "10px";
+    shareButton.onclick = async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title:"Heart.exe ❤️",
+            text:"Take my quiz!",
+            url:publicInput.value
+          });
+        } catch (_) {}
+      } else {
+        try {
+          await navigator.clipboard.writeText(publicInput.value);
+          showToast("Quiz link copied!");
+        } catch (_) {
+          publicInput.focus();
+          publicInput.select();
+        }
+      }
+    };
+
+    publicSection.appendChild(shareButton);
+
+    /* Questions and answers */
+    const questionSection = addSection("📝 Questions & correct answers");
 
     if (!questions.length) {
-      questionsSection.appendChild(makeElement("p", "No questions found."));
+      questionSection.appendChild(
+        makeElement("p","No questions found.","muted")
+      );
     }
 
-    questions.forEach((question, index) => {
-      const card = makeElement("div", undefined, "question-card");
+    questions.forEach((question,index) => {
+      const card = makeElement("div",undefined,"question-card");
 
       card.appendChild(
-        makeElement("h4", (index + 1) + ". " + question.question_text)
+        makeElement("h4",(index+1)+". "+question.question_text)
       );
 
-      const options = Array.isArray(question.options) ? question.options : [];
+      const options = Array.isArray(question.options)
+        ? question.options
+        : [];
 
-      options.forEach((option) => {
+      options.forEach(option => {
         const optionText =
           typeof option === "string"
             ? option
@@ -781,76 +2199,106 @@ async function loadManagedQuiz(token) {
         card.appendChild(
           makeElement(
             "p",
-            (isCorrect ? "✅ " : "• ") + optionText
+            (isCorrect ? "✅ " : "○ ") + optionText,
+            isCorrect ? "correct-answer" : "muted small"
           )
         );
       });
 
-      questionsSection.appendChild(card);
+      questionSection.appendChild(card);
     });
 
-    /* Submission results */
-    const resultsSection = addSection("👥 Participants & Results");
-    const submissions = Array.isArray(quiz.submissions)
-      ? quiz.submissions
-      : [];
+    /* Results */
+    const resultsSection = addSection("👥 Participants & results");
 
     if (!submissions.length) {
-      resultsSection.appendChild(
-        makeElement("p", "No one has taken your quiz yet.")
-      );
-    }
+      const empty = makeElement("div",undefined,"empty-state");
 
-    submissions.forEach((submission, index) => {
-      const card = makeElement("div", undefined, "question-card");
-
-      card.appendChild(
+      empty.appendChild(makeElement("div","💌","empty-icon"));
+      empty.appendChild(makeElement("h3","Your story starts here"));
+      empty.appendChild(
         makeElement(
-          "h4",
-          (index + 1) + ". " +
-          (submission.respondent_name || "Anonymous")
+          "p",
+          "No one has taken your quiz yet. Copy your public link and send it to your friends."
         )
       );
 
-      card.appendChild(
+      resultsSection.appendChild(empty);
+    }
+
+    submissions.forEach((submission,index) => {
+      const card = makeElement("article",undefined,"submission-card");
+
+      const top = makeElement("div",undefined,"submission-top");
+
+      const left = makeElement("div");
+      left.appendChild(
         makeElement(
-          "p",
-          "Score: " + submission.score + " / " + submission.total_questions
+          "div",
+          (index+1)+". "+(submission.respondent_name || "Anonymous"),
+          "submission-name"
         )
       );
 
       if (submission.submitted_at) {
-        card.appendChild(
+        left.appendChild(
           makeElement(
             "p",
-            "Submitted: " +
-            new Date(submission.submitted_at).toLocaleString()
+            new Date(submission.submitted_at).toLocaleString(),
+            "muted small"
           )
         );
       }
 
-      let answers = submission.answers || [];
+      top.appendChild(left);
 
-      if (typeof answers === "string") {
+      const score = Number(submission.score) || 0;
+      const total = Number(submission.total_questions) || questions.length;
+      const percentage = total
+        ? Math.max(0,Math.min(100,Math.round(score/total*100)))
+        : 0;
+
+      top.appendChild(
+        makeElement("span",score+" / "+total,"score-badge")
+      );
+
+      card.appendChild(top);
+
+      const track = makeElement("div",undefined,"score-track");
+      const fill = makeElement("div");
+      fill.style.width = percentage+"%";
+      track.appendChild(fill);
+      card.appendChild(track);
+
+      card.appendChild(
+        makeElement("p",percentage+"% correct","muted small")
+      );
+
+      let submissionAnswers = submission.answers || [];
+
+      if (typeof submissionAnswers === "string") {
         try {
-          answers = JSON.parse(answers);
-        } catch {
-          answers = [];
+          submissionAnswers = JSON.parse(submissionAnswers);
+        } catch (_) {
+          submissionAnswers = [];
         }
       }
 
-      if (!Array.isArray(answers)) {
-        answers = [];
+      if (!Array.isArray(submissionAnswers)) {
+        submissionAnswers = [];
       }
 
-      const answerHeading = makeElement("p", "Answers:");
-      card.appendChild(answerHeading);
+      const details = makeElement("details");
+      const summary = makeElement("summary","📝 View answers");
+      details.appendChild(summary);
 
-      if (!answers.length) {
-        card.appendChild(makeElement("p", "No answer details available."));
+      if (!submissionAnswers.length) {
+        details.appendChild(
+          makeElement("p","No answer details available.","muted small")
+        );
       }
 
-      answers.forEach((answer) => {
+      submissionAnswers.forEach(answer => {
         const question = questions.find(
           q => String(q.id) === String(answer.question_id)
         );
@@ -861,152 +2309,165 @@ async function loadManagedQuiz(token) {
           answer.option ??
           "";
 
-        const answerLine = makeElement(
+        const detail = makeElement(
           "p",
           (question ? question.question_text : "Question") +
-          "\nYour answer: " + safeText(answerText) +
+          "\nTheir answer: " + safeText(answerText) +
           (question
             ? "\nCorrect answer: " + safeText(question.correct_option)
-            : "")
+            : ""),
+          "answer-detail"
         );
 
-        card.appendChild(answerLine);
+        details.appendChild(detail);
       });
 
-      const deleteResultButton = makeElement(
-        "button",
-        "🗑️ Delete This Result"
-      );
+      card.appendChild(details);
 
-      deleteResultButton.type = "button";
+      const deleteButton = makeElement("button","🗑️ Delete result","danger");
+      deleteButton.style.marginTop = "13px";
+      deleteButton.onclick = () => {
+        deleteManagedSubmission(token,submission.id);
+      };
 
-      deleteResultButton.addEventListener("click", () => {
-        deleteManagedSubmission(token, submission.id);
-      });
+      card.appendChild(deleteButton);
 
-      card.appendChild(deleteResultButton);
       resultsSection.appendChild(card);
     });
 
-    /* Delete quiz */
-    const dangerSection = addSection("⚠️ Danger Zone");
+    /* Danger zone */
+    const dangerSection = addSection("⚠️ Danger zone","manage-section danger-zone");
 
-    const deleteQuizButton = makeElement(
-      "button",
-      "🗑️ Delete Entire Quiz"
+    dangerSection.appendChild(
+      makeElement(
+        "p",
+        "Deleting your quiz permanently removes it and its results. This action cannot be undone.",
+        "muted small"
+      )
     );
 
-    deleteQuizButton.type = "button";
-
-    deleteQuizButton.addEventListener("click", () => {
-      deleteManagedQuiz(token);
-    });
-
+    const deleteQuizButton = makeElement("button","🗑️ Delete entire quiz","danger full");
+    deleteQuizButton.onclick = () => deleteManagedQuiz(token);
     dangerSection.appendChild(deleteQuizButton);
 
-    const homeButton = makeElement("button", "🏠 Home");
-    homeButton.type = "button";
-    homeButton.addEventListener("click", goHome);
+    const homeButton = makeElement("button","🏠 Return home","secondary full");
+    homeButton.style.marginTop = "12px";
+    homeButton.onclick = goHome;
 
-    contentElement.appendChild(homeButton);
+    content.appendChild(homeButton);
 
   } catch (error) {
-    console.error("Management dashboard error:", error);
+    console.error("Management dashboard error:",error);
 
-    if (titleElement) {
-      titleElement.textContent = "Unable to open dashboard";
-    }
+    $("manageTitle").textContent = "Unable to open dashboard";
+    content.replaceChildren();
 
-    if (contentElement) {
-      contentElement.replaceChildren();
+    const errorBox = makeElement("div",undefined,"empty-state");
 
-      const message = document.createElement("p");
-      message.textContent =
-        error.message || "Something went wrong loading your quiz.";
-      contentElement.appendChild(message);
+    errorBox.appendChild(makeElement("div","🥺","empty-icon"));
+    errorBox.appendChild(makeElement("h3","We couldn't load your dashboard"));
+    errorBox.appendChild(
+      makeElement("p",error.message || "Something went wrong.","muted")
+    );
 
-      const homeButton = document.createElement("button");
-      homeButton.textContent = "🏠 Go Home";
-      homeButton.addEventListener("click", goHome);
-      contentElement.appendChild(homeButton);
-    }
+    const retryButton = makeElement("button","🔄 Try again","primary full");
+    retryButton.onclick = () => loadManagedQuiz(token);
+
+    errorBox.appendChild(retryButton);
+    content.appendChild(errorBox);
   }
 }
 
-/* Delete one participant's submission */
-async function deleteManagedSubmission(token, submissionId) {
-  if (!confirm("Are you sure you want to delete this participant's result?")) {
+/* ========================================
+   DELETE ONE RESULT
+======================================== */
+
+async function deleteManagedSubmission(token,submissionId) {
+  if (!confirm("Delete this participant's result? This cannot be undone.")) {
     return;
   }
 
   try {
-    const { error } = await db.rpc("delete_managed_submission", {
-      p_management_token: token,
-      p_submission_id: submissionId
+    const {error} = await db.rpc("delete_managed_submission",{
+      p_management_token:token,
+      p_submission_id:submissionId
     });
 
     if (error) throw error;
 
-    alert("Participant result deleted.");
+    showToast("Participant result deleted.");
     await loadManagedQuiz(token);
 
   } catch (error) {
-    console.error(error);
-    alert("Could not delete the result: " + error.message);
+    console.error("Delete submission error:",error);
+    showToast("Could not delete result: " + error.message);
   }
 }
 
-/* Delete the entire quiz and its results */
+/* ========================================
+   DELETE ENTIRE QUIZ
+======================================== */
+
 async function deleteManagedQuiz(token) {
-  if (
-    !confirm(
-      "Delete this entire quiz and ALL its results? This cannot be undone."
-    )
-  ) {
+  if (!confirm("Delete this entire quiz and ALL its results?")) {
     return;
   }
 
-  if (
-    !confirm(
-      "Final confirmation: permanently delete this quiz?"
-    )
-  ) {
+  if (!confirm("Final confirmation: permanently delete this quiz?")) {
     return;
   }
 
   try {
-    const { error } = await db.rpc("delete_managed_quiz", {
-      p_management_token: token
+    const {error} = await db.rpc("delete_managed_quiz",{
+      p_management_token:token
     });
 
     if (error) throw error;
 
-    alert("Quiz deleted successfully.");
-
     managedQuizData = null;
     currentManagementToken = null;
+    managementToken = null;
 
-    location.hash = "";
+    history.replaceState(null,"",location.pathname+location.search);
+
     goHome();
+    showToast("Quiz deleted successfully.");
 
   } catch (error) {
-    console.error(error);
-    alert("Could not delete the quiz: " + error.message);
+    console.error("Delete quiz error:",error);
+    showToast("Could not delete quiz: " + error.message);
   }
 }
 
-/* Handle public quiz and private dashboard links */
+/* ========================================
+   ROUTING
+======================================== */
+
 async function routeHash() {
   const hash = location.hash.slice(1);
 
   if (hash.startsWith("quiz=")) {
-    const token = decodeURIComponent(hash.slice(5));
+    const token = hash.slice(5);
+
+    if (!token) {
+      showOnly("error");
+      $("errorMessage").textContent = "This quiz link is incomplete.";
+      return;
+    }
+
     await startPublicQuiz(token);
     return;
   }
 
   if (hash.startsWith("manage=")) {
-    const token = decodeURIComponent(hash.slice(7));
+    const token = hash.slice(7);
+
+    if (!token) {
+      showOnly("error");
+      $("errorMessage").textContent = "This private dashboard link is incomplete.";
+      return;
+    }
+
     await loadManagedQuiz(token);
     return;
   }
@@ -1014,9 +2475,15 @@ async function routeHash() {
   showOnly("home");
 }
 
-/* Start the website */
 function initializeApp() {
-  window.addEventListener("hashchange", routeHash);
+  initializeTheme();
+
+  $("theme").value = document.body.className;
+
+  renderQuestions();
+
+  window.addEventListener("hashchange",routeHash);
+
   routeHash();
 }
 
